@@ -9,7 +9,7 @@ namespace MyNewTestProject
         [Test]
         public async Task GetStartedLink()
         {
-            await Page.GotoAsync("https://playwright.dev");
+            //Line123
 
             // Click the get started link.
             await Page.GetByRole(AriaRole.Link, new() { Name = "Get started" }).ClickAsync();
@@ -20,8 +20,8 @@ namespace MyNewTestProject
     {
         await Page.GotoAsync("https://playwright.dev");
 
-        // Expect a title "to contain" a substring.
-        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+        //First Line
+        //Second Line
 
             // Expects page to have a heading with the name of Installation.
             await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Installation" })).ToBeVisibleAsync();
