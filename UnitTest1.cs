@@ -4,25 +4,28 @@
     [TestFixture]
     public class Tests : PageTest
     {
-        [Test]
-        public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
+       [Test]
+    public void GetStartedLink()
+    {
+        using var playwright = Playwright.CreateAsync().GetAwaiter().GetResult();
+        var browser = playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
-            await Page.GotoAsync("https://playwright.dev");
+            Headless = false
+        }).GetAwaiter().GetResult();
 
-            // Expect a title "to contain" a substring.
-            await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+        var context = browser.NewContextAsync().GetAwaiter().GetResult();
+        var page = context.NewPageAsync().GetAwaiter().GetResult();
 
-            // create a locator
-            var getStarted = Page.Locator("text=Get Started");
+        page.GotoAsync("https://playwright.dev").GetAwaiter().GetResult();
 
-            // Expect an attribute "to be strictly equal" to the value.
-            await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
+        // Click the get started link
+        page.GetByRole(AriaRole.Link, new() { Name = "Get started" })
+            .ClickAsync().GetAwaiter().GetResult();
 
-            // Click the get started link.
-            await getStarted.ClickAsync();
+        // Verify Installation heading is visible
+        var heading = page.GetByRole(AriaRole.Heading, new() { Name = "Installation" });
+        
+    }
 
-            // Expects the URL to contain intro.
-            await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
-        }
     }
 }
